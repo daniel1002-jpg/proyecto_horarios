@@ -1,0 +1,20 @@
+[
+	{
+		"Nombre": "Taller de programación 1",
+		"Horario": "18:00 - 22:00",
+		"Días": ["Lunes", "Jueves"],
+		"Modalidad": "Virtual"
+	},
+	{
+		"Nombre": "Probabilidad y Estadística",
+		"Horario": "18:00 - 21:00",
+		"Días": ["Martes", "Miércoles"],
+		"Modalidad": "Presencial"
+	},
+	{
+		"Nombre": "Teoría de Algoritmos",
+		"Horario": "19:00 - 22:00",
+		"Días": ["Lunes", "Jueves"],
+		"Modalidad": "Mixta"
+	}
+]
