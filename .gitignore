@@ -1,2 +1,6 @@
 # Copilot instructions file
 .github/copilot-instructions.md
+
+# Python cache files
+__pycache__/
+*.pyc
