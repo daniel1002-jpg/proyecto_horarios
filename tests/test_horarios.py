@@ -52,7 +52,35 @@ class TestReadHorarios(unittest.TestCase):
 
         os.remove("invalid_data.json")
 
-    
+    def test_organize_horarios(self):
+        # Arrange
+        horarios_data = [
+            {"Nombre": "Teoría de Algoritmos", "Horario": "19:00 - 22:00", "Días": ["Lunes", "Jueves"], "Modalidad": "Mixta"},
+            {"Nombre": "Taller de programación 1", "Horario": "18:00 - 22:00", "Días": ["Lunes", "Jueves"], "Modalidad": "Virtual"},
+            {"Nombre": "Probabilidad y Estadística", "Horario": "18:00 - 21:00", "Días": ["Martes", "Miércoles"], "Modalidad": "Presencial"},
+        ]
+
+        # Act
+        organized_data = horarios.organize_horarios(horarios_data)
+
+        # Assert
+        self.assertIn("Lunes", organized_data)
+        self.assertIn("Martes", organized_data)
+        self.assertIn("Miércoles", organized_data)
+        self.assertIn("Jueves", organized_data)
+
+        self.assertEqual(len(organized_data["Lunes"]), 2)
+        self.assertEqual(len(organized_data["Martes"]), 1)
+        self.assertEqual(len(organized_data["Miércoles"]), 1)
+        self.assertEqual(len(organized_data["Jueves"]), 2)
+
+        lunes_materias = organized_data["Lunes"]
+        self.assertEqual(lunes_materias[0]["Nombre"], "Taller de programación 1")
+        self.assertEqual(lunes_materias[1]["Nombre"], "Teoría de Algoritmos")
+
+        jueves_materias = organized_data["Jueves"]
+        self.assertEqual(jueves_materias[0]["Nombre"], "Taller de programación 1")
+        self.assertEqual(jueves_materias[1]["Nombre"], "Teoría de Algoritmos")
 
 def get_invalid_data():
     invalid_data = {"materias_incorrectas": []}
@@ -61,3 +89,6 @@ def get_invalid_data():
         json.dump(invalid_data, f)
 
     return invalid_data
+
+def get_horarios_data(data_path):
+    return horarios.read_horarios(data_path)
