@@ -160,6 +160,96 @@ class TestOrganizeHorarios(unittest.TestCase):
             self.assertIn(day, organized_data)
             self.assertEqual(len(organized_data[day]), 0)
 
+class TestGenerateHTML(unittest.TestCase):
+    
+    def setUp(self):
+        self.sample_data = [
+            {"nombre": "Teoría de Algoritmos", "horario": {"inicio": "19:00", "fin": "22:00"}, "dias": ["Lunes", "Jueves"], "modalidad": "mixta"},
+        ]
+        self.organized_data = horarios.organize_horarios(self.sample_data)
+
+    def test_generate_html_creates_file(self):
+        # Arrange
+        output_path = "output/test_horario.html"
+
+        # Act
+        horarios.generate_html(self.organized_data, output_path)
+
+        # Assert
+        self.assertTrue(os.path.exists(output_path))
+
+        # Clean up
+        if os.path.exists(output_path):
+            os.remove(output_path)
+
+    def test_generate_html_contains_subject_name(self):
+        # Arrange
+        output_path = "output/test_horario.html"
+
+        # Act
+        horarios.generate_html(self.organized_data, output_path)
+
+        # Assert
+        with open(output_path, 'r') as file:
+            content = file.read()
+            self.assertIn(self.organized_data["Lunes"][0]["nombre"], content)
+
+        # Clean up
+        os.remove(output_path)
+
+    def test_generate_html_contains_schedule_info(self):
+        # Arrange
+        output_path = "output/test_horario.html"
+
+        # Act
+        horarios.generate_html(self.organized_data, output_path)
+
+        # Assert
+        schedule = format(self.organized_data["Lunes"][0]["horario"]["inicio"]) + " - " + format(self.organized_data["Lunes"][0]["horario"]["fin"])
+        modality = self.organized_data["Lunes"][0]["modalidad"]
+        with open(output_path, 'r') as file:
+            content = file.read()
+            self.assertIn(schedule, content)
+            self.assertIn(modality, content)
+
+        # Clean up
+        os.remove(output_path)
+
+    def test_generated_html_has_valid_structure(self):
+        # Arrange
+        output_path = "output/test_horario.html"
+
+        # Act
+        horarios.generate_html(self.organized_data, output_path)
+
+        # Assert
+        with open(output_path, 'r') as file:
+            content = file.read()
+            self.assertTrue("<!DOCTYPE html>" in content)
+            self.assertTrue("<html lang=\"es\">" in content)
+            self.assertTrue("</html>" in content)
+
+        # Clean up
+        os.remove(output_path)
+
+    def test_generate_html_contains_summary_stadistics(self):
+        # Arrange
+        output_path = "output/test_horario.html"
+
+        # Act
+        horarios.generate_html(self.organized_data, output_path)
+
+        # Assert
+        with open(output_path, 'r') as file:
+            content = file.read()
+            self.assertIn("Total de materias: 1", content)
+            self.assertIn("Presencial: 0", content)
+            self.assertIn("Virtual: 0", content)
+            self.assertIn("Mixta: 1", content)
+
+        # Clean up
+        os.remove(output_path)
+
 class TestIntegration(unittest.TestCase):
 
     def test_read_and_organize_real_data(self):

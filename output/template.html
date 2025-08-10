@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Horario {{ cuatrimestre }}</title>
+    </head>
+    <body>
+        <header>
+            <h1>Horario {{ cuatrimestre }}</h1>
+        </header>
+
+        <main>
+            <section class="schedule-container">
+                {% for dia, materias in horarios_por_dia.items() %}
+                <div class="day-section">
+                    <h2>{{ dia }}</h2>
+                    {% if materias %}
+                    <ul class="subject-list">
+                        {% for materia in materias %}
+                        <li class="subject-item">
+                            <strong>{{ materia.nombre }}</strong>
+                            <span class="time">{{ materia.horario.inicio }} - {{ materia.horario.fin }}</span>
+                            <span class="modality">{{ materia.modalidad }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="no-classes">Sin clases</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+            
+            <section class="summary">
+                <h2>Resumen</h2>
+                <p>Total de materias: {{ total_materias }}</p>
+                <p>Modalidades:</p>
+                <ul>
+                    <li>Virtual: {{ modalidades.virtual }}</li>
+                    <li>Presencial: {{ modalidades.presencial }}</li>
+                    <li>Mixta: {{ modalidades.mixta }}</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>Generado automáticamente el {{ fecha_generacion }}</p>
+        </footer>
+    </body>
+</html>

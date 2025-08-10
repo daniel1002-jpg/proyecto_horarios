@@ -4,3 +4,7 @@
 # Python cache files
 __pycache__/
 *.pyc
+
+# Virutal enviroment
+venv/
+.env
