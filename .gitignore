@@ -5,9 +5,9 @@
 __pycache__/
 *.pyc
 
-# Virutal enviroment
+# Virtual enviroment
 venv/
 .env
 
-# Generate output files
+# Generated output files
 output/horario.html

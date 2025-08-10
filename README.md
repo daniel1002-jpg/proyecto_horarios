@@ -2,23 +2,24 @@
 
 Sistema de gestión de horarios académicos con generación de HTML.
 
-## Intalación
+## Instalación
 
 ```bash
 # Crear entorno virtual
-python3 -m venv env
+python3 -m venv venv
 
 # Activar entorno virtual
 source venv/bin/activate
 
-# Intalar dependencias
+# Instalar dependencias
 pip install -r requirements.txt
 ```
+
 ## Uso
 
 ```bash
 # Ejecutar tests
-pyhton3 -m unittest
+python3 -m unittest
 
 # Generar horario HTML
 python3 main.py
@@ -32,6 +33,7 @@ proyecto_horarios/
 │   └── horarios.json       # Datos de entrada
 ├── output/
 │   ├── template.html       # Plantilla HTML
+│   ├── styles.css          # Estilos CSS
 │   └── horario.html        # HTML generado
 ├── tests/
 │   └── test_horarios.py    # Tests unitarios
