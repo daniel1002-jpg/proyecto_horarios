@@ -17,13 +17,13 @@
                     <h2>{{ dia }}</h2>
                     {% if materias %}
                     <ul class="subject-list">
-                        {% for materia in materias %}
+                        {%- for materia in materias %}
                         <li class="subject-item">
                             <strong>{{ materia.nombre }}</strong>
                             <span class="time">{{ materia.horario.inicio }} - {{ materia.horario.fin }}</span>
                             <span class="modality">{{ materia.modalidad }}</span>
                         </li>
-                        {% endfor %}
+                        {%- endfor %}
                     </ul>
                     {% else %}
                     <p class="no-classes">Sin clases</p>

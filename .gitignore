@@ -8,3 +8,6 @@ __pycache__/
 # Virutal enviroment
 venv/
 .env
+
+# Generate output files
+output/horario.html
