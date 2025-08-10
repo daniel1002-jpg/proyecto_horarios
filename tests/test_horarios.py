@@ -3,12 +3,11 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import unittest
-import json
 import horarios
 
 class TestReadHorarios(unittest.TestCase):
     
-    def test_read_horarios_correctly(self):
+    def test_read_existing_file(self):
         # Arrange
         file_path = "data/horarios.json"
 
@@ -16,14 +15,10 @@ class TestReadHorarios(unittest.TestCase):
         data = horarios.read_horarios(file_path)
 
         # Assert
+        self.assertIsInstance(data, list) # Revised if is necessary
         self.assertGreater(len(data), 0)
-        for item in data:
-            self.assertIn("Nombre", item)
-            self.assertIn("Horario", item)
-            self.assertIn("Días", item)
-            self.assertIn("Modalidad", item)
 
-    def test_read_horarios_file_not_found(self):
+    def test_read_nonexisting_file(self):
         # Arrange
         file_path = "data/non_existent_file.json"
 
@@ -31,64 +26,155 @@ class TestReadHorarios(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             horarios.read_horarios(file_path)
 
-    def test_read_correct_data_with_invalid_keys(self):
+class TestValidateFormat(unittest.TestCase):
+
+    def test_valid_format(self):
         # Arrange
-        invalid_data = get_invalid_data()
+        valid_data = [
+            {
+                "nombre": "Test subject",
+                "horario": {"inicio": "10:00", "fin": "12:00"},
+                "dias": ["Lunes", "Miércoles"],
+                "modalidad": "mixta"
+            }
+        ]
+
+        # Act & Assert
+        try:
+            horarios.validate_format(valid_data)
+        except (KeyError, ValueError):
+            self.fail("validate_format raised an exception with valid data")
+
+    def test_missing_nombre_key(self):
+        # Arrange
+        invalid_data = [
+            {
+                "horario": {"inicio": "10:00", "fin": "12:00"},
+                "dias": ["Lunes", "Miércoles"],
+                "modalidad": "mixta"
+            }
+        ]
 
         # Act & Assert
         with self.assertRaises(KeyError):
             horarios.validate_format(invalid_data)
 
-    def test_read_correct_data_with_missing_keys(self):
+    def test_missing_horario_key(self):
         # Arrange
-        invalid_data = json.dumps({"materias": [{"Nombre": "Algoritmos"}]})
-        with open("invalid_data.json", "w") as f:
-            f.write(invalid_data)
-
-        # Act & Assert
-        data = horarios.read_horarios("invalid_data.json")
-        with self.assertRaises(ValueError):
-            horarios.validate_format(data)
-
-        os.remove("invalid_data.json")
-
-    def test_organize_horarios(self):
-        # Arrange
-        horarios_data = [
-            {"Nombre": "Teoría de Algoritmos", "Horario": "19:00 - 22:00", "Días": ["Lunes", "Jueves"], "Modalidad": "Mixta"},
-            {"Nombre": "Taller de programación 1", "Horario": "18:00 - 22:00", "Días": ["Lunes", "Jueves"], "Modalidad": "Virtual"},
-            {"Nombre": "Probabilidad y Estadística", "Horario": "18:00 - 21:00", "Días": ["Martes", "Miércoles"], "Modalidad": "Presencial"},
+        invalid_data = [
+            {
+                "nombre": "Test subject",
+                "dias": ["Lunes", "Miércoles"],
+                "modalidad": "mixta"
+            }
         ]
 
+        # Act & Assert
+        with self.assertRaises(KeyError):
+            horarios.validate_format(invalid_data)
+
+    def test_invalid_horario_structure(self):
+        # Arrange
+        invalid_data = [
+            {
+                "nombre": "Test subject",
+                "horario": "18:00 - 12:00",
+                "dias": ["Lunes", "Miércoles"],
+                "modalidad": "mixta"
+            }
+        ]
+
+        # Act & Assert
+        with self.assertRaises(ValueError):
+            horarios.validate_format(invalid_data)
+
+    def test_missing_horario_inicio(self):
+        # Arrange
+        invalid_data = [
+            {
+                "nombre": "Test subject",
+                "horario": {"fin": "12:00"},
+                "dias": ["Lunes", "Miércoles"],
+                "modalidad": "mixta"
+            }
+        ]
+
+        # Act & Assert
+        with self.assertRaises(KeyError):
+            horarios.validate_format(invalid_data)
+
+    def test_non_list_data(self):
+        # Arrange
+        invalid_data = {"nombre": "Test subject"}
+
+        # Act & Assert
+        with self.assertRaises(ValueError):
+            horarios.validate_format(invalid_data)
+
+class TestOrganizeHorarios(unittest.TestCase):
+
+    """ Common setup for tests """
+    def setUp(self):
+        self.sample_data = [
+            {"nombre": "Teoría de Algoritmos", "horario": {"inicio": "19:00", "fin": "22:00"}, "dias": ["Lunes", "Jueves"], "modalidad": "mixta"},
+            {"nombre": "Taller de programación 1", "horario": {"inicio": "18:00", "fin": "22:00"}, "dias": ["Lunes", "Jueves"], "modalidad": "virtual"},
+            {"nombre": "Probabilidad y Estadística", "horario": {"inicio": "18:00", "fin": "21:00"}, "dias": ["Martes", "Miércoles"], "modalidad": "presencial"},
+        ]
+
+    def test_organize_by_days(self):
         # Act
-        organized_data = horarios.organize_horarios(horarios_data)
+        organized_data = horarios.organize_horarios(self.sample_data)
 
         # Assert
-        self.assertIn("Lunes", organized_data)
-        self.assertIn("Martes", organized_data)
-        self.assertIn("Miércoles", organized_data)
-        self.assertIn("Jueves", organized_data)
+        expected_days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+        for day in expected_days:
+            self.assertIn(day, organized_data)
 
+    def test_correct_subject_count_per_day(self):
+        # Act
+        organized_data = horarios.organize_horarios(self.sample_data)
+
+        # Assert
         self.assertEqual(len(organized_data["Lunes"]), 2)
         self.assertEqual(len(organized_data["Martes"]), 1)
         self.assertEqual(len(organized_data["Miércoles"]), 1)
         self.assertEqual(len(organized_data["Jueves"]), 2)
+        self.assertEqual(len(organized_data["Viernes"]), 0)
 
-        lunes_materias = organized_data["Lunes"]
-        self.assertEqual(lunes_materias[0]["Nombre"], "Taller de programación 1")
-        self.assertEqual(lunes_materias[1]["Nombre"], "Teoría de Algoritmos")
+    def test_time_sorting_within_days(self):
+        # Act
+        organized_data = horarios.organize_horarios(self.sample_data)
 
-        jueves_materias = organized_data["Jueves"]
-        self.assertEqual(jueves_materias[0]["Nombre"], "Taller de programación 1")
-        self.assertEqual(jueves_materias[1]["Nombre"], "Teoría de Algoritmos")
+        # Assert
+        lunes_subjects = organized_data["Lunes"]
+        self.assertEqual(lunes_subjects[0]["nombre"], "Taller de programación 1")
+        self.assertEqual(lunes_subjects[1]["nombre"], "Teoría de Algoritmos")
 
-def get_invalid_data():
-    invalid_data = {"materias_incorrectas": []}
-    
-    with open("invalid_data.json", "w") as f:
-        json.dump(invalid_data, f)
+    def test_empty_data(self):
+        # Act
+        organized_data = horarios.organize_horarios([])
 
-    return invalid_data
+        # Assert
+        expected_days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+        for day in expected_days:
+            self.assertIn(day, organized_data)
+            self.assertEqual(len(organized_data[day]), 0)
 
-def get_horarios_data(data_path):
-    return horarios.read_horarios(data_path)
+class TestIntegration(unittest.TestCase):
+
+    def test_read_and_organize_real_data(self):
+        # Arrange
+        file_path = "data/horarios.json"
+        
+        # Act
+        data = horarios.read_horarios(file_path)
+        organized_data = horarios.organize_horarios(data)
+
+        # Assert
+        self.assertIsInstance(organized_data, dict)
+        self.assertGreater(len(organized_data["Lunes"]), 0)
+        self.assertGreater(len(organized_data["Martes"]), 0)
+
+
+if __name__ == "__main__":
+    unittest.main()

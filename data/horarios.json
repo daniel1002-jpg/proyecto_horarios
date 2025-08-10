@@ -1,20 +1,30 @@
 [
 	{
-		"Nombre": "Taller de programación 1",
-		"Horario": "18:00 - 22:00",
-		"Días": ["Lunes", "Jueves"],
-		"Modalidad": "Virtual"
+		"nombre": "Taller de programación 1",
+		"horario": 
+			{
+				"inicio": "18:00",
+				"fin": "22:00"
+			},
+		"dias": ["Lunes", "Jueves"],
+		"modalidad": "virtual"
 	},
 	{
-		"Nombre": "Probabilidad y Estadística",
-		"Horario": "18:00 - 21:00",
-		"Días": ["Martes", "Miércoles"],
-		"Modalidad": "Presencial"
+		"nombre": "Probabilidad y Estadística",
+		"horario": {
+			"inicio": "18:00",
+			"fin": "21:00"
+		},
+		"dias": ["Martes", "Miércoles"],
+		"modalidad": "presencial"
 	},
 	{
-		"Nombre": "Teoría de Algoritmos",
-		"Horario": "19:00 - 22:00",
-		"Días": ["Lunes", "Jueves"],
-		"Modalidad": "Mixta"
+		"nombre": "Teoría de Algoritmos",
+		"horario": {
+			"inicio": "19:00",
+			"fin": "22:00"
+		},
+		"dias": ["Lunes", "Jueves"],
+		"modalidad": "mixta"
 	}
 ]
