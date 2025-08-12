@@ -5,44 +5,95 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Horario {{ cuatrimestre }}</title>
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
     <body>
+        <!-- Macro para generar ícono según modalidad -->
+        {% macro modality_icon(modalidad) -%}
+            {% if modalidad == 'virtual' %}
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            {% elif modalidad == 'presencial' %}
+                <i class="fa-solid fa-building"></i>
+            {% elif modalidad == 'mixta' %}
+                <i class="fa-solid fa-house-user"></i>
+            {% endif %}
+        {%- endmacro %}
         <div class="container">
             <header>
                 <h1>Horario {{ cuatrimestre }}</h1>
             </header>
 
             <main>
-                <section class="schedule-container">
-                    {% for dia, materias in horarios_por_dia.items() %}
-                    <div class="day-section">
-                        <h2>{{ dia }}</h2>
-                        {% if materias %}
-                        <ul class="subject-list">
-                            {%- for materia in materias %}
-                            <li class="subject-item">
-                                <strong>{{ materia.nombre }}</strong>
-                                <span class="time">{{ materia.horario.inicio }} - {{ materia.horario.fin }}</span>
-                                <span class="modality {{ materia.modalidad }}">{{ materia.modalidad }}</span>
-                            </li>
-                            {%- endfor %}
-                        </ul>
-                        {% else %}
-                        <p class="no-classes">Sin clases</p>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
+                <section class="schedule-table-container">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Horario</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for horario in horarios_tabla %}
+                            <tr>
+                                <td class="time-slot">{{ horario.time_range }}</td>
+                                <td class="day-cell">
+                                    {% if horario.Lunes %}
+                                    <div class="subject {{ horario.Lunes.modalidad }}">
+                                        <strong>{{ horario.Lunes.nombre }}</strong>
+                                        <small>{{ modality_icon(horario.Lunes.modalidad) }} ({{ horario.Lunes.modalidad }})</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td class="day-cell">
+                                    {% if horario.Martes %}
+                                    <div class="subject {{ horario.Martes.modalidad }}">
+                                        <strong>{{ horario.Martes.nombre }}</strong>
+                                        <small>{{ modality_icon(horario.Martes.modalidad) }} ({{ horario.Martes.modalidad }})</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td class="day-cell">
+                                    {% if horario.Miércoles %}
+                                    <div class="subject {{ horario.Miércoles.modalidad }}">
+                                        <strong>{{ horario.Miércoles.nombre }}</strong>
+                                        <small>{{ modality_icon(horario.Miércoles.modalidad) }} ({{ horario.Miércoles.modalidad }})</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td class="day-cell">
+                                    {% if horario.Jueves %}
+                                    <div class="subject {{ horario.Jueves.modalidad }}">
+                                        <strong>{{ horario.Jueves.nombre }}</strong>
+                                        <small>{{ modality_icon(horario.Jueves.modalidad) }} ({{ horario.Jueves.modalidad }})</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td class="day-cell">
+                                    {% if horario.Viernes %}
+                                    <div class="subject {{ horario.Viernes.modalidad }}">
+                                        <strong>{{ horario.Viernes.nombre }}</strong>
+                                        <small>{{ modality_icon(horario.Viernes.modalidad) }} ({{ horario.Viernes.modalidad }})</small>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </section>
                 
                 <section class="summary">
                     <h2>Resumen</h2>
-                    <p>Total de materias: {{ total_materias }}</p>
-                    <p>Modalidades:</p>
-                    <ul>
-                        <li>🟢 Virtual: {{ modalidades.virtual }}</li>
-                        <li>🔴 Presencial: {{ modalidades.presencial }}</li>
-                        <li>🟡 Mixta: {{ modalidades.mixta }}</li>
-                    </ul>
+                    <p><strong>Total de materias:</strong> {{ total_materias }}</p>
+                    <div class="modality-summary">
+                        <span class="modality-count virtual">{{ modality_icon('virtual') }} Virtual: {{ modalidades.virtual }}</span>
+                        <span class="modality-count presencial">{{ modality_icon('presencial') }} Presencial: {{ modalidades.presencial }}</span>
+                        <span class="modality-count mixta">{{ modality_icon('mixta') }} Mixta: {{ modalidades.mixta }}</span>
+                    </div>
                 </section>
             </main>
 

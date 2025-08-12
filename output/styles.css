@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 /* Basic reset */
 * {
     margin: 0;
@@ -7,34 +9,34 @@
 
 /* Font and base configuration */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     padding: 20px;
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #EBF2FA;
+    color: #1D2F6F;
+    font-size: 1.2rem;
 }
 
 /* Main container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(29, 47, 111, 0.15);
     overflow: hidden;
 }
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
+    background: #1D2F6F;
     color: white;
     padding: 2rem;
     text-align: center;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 3.5rem;
+    font-weight: 600;
     margin: 0;
 }
 
@@ -43,133 +45,180 @@ main {
     padding: 2rem;
 }
 
-/* Sections */
-.schedule-container {
+/* Schedule table */
+.schedule-table-container {
     margin-bottom: 2rem;
+    overflow-x: auto;
 }
 
-.day-section {
-    margin-bottom: 2rem;
-    border: 1px solid #e9ecef;
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(29, 47, 111, 0.1);
     border-radius: 6px;
     overflow: hidden;
 }
 
-.day-section h2 {
-    background-color: #495057;
+.schedule-table thead th {
+    background-color: #1D2F6F;
     color: white;
-    padding: 1rem;
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    border-bottom: 2px solid #EBF2FA;
 }
 
-/* Subject lists */
-.subject-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.schedule-table tbody tr {
+    border-bottom: 1px solid #EBF2FA;
 }
 
-.subject-item {
-    padding: 1rem;
-    border-bottom: 1px solid #e9ecef;
+.schedule-table tbody tr:nth-child(even) {
+    background-color: rgba(235, 242, 250, 0.5);
+}
+
+.schedule-table tbody tr:hover {
+    background-color: rgba(235, 242, 250, 0.8);
+}
+
+/* Time cells */
+.time-slot {
+    background-color: #EBF2FA;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    white-space: nowrap;
+    border-right: 2px solid #1D2F6F;
+    min-width: 120px;
+    font-size: 0.85rem;
+    color: #1D2F6F;
+}
+
+/* Day cells */
+.day-cell {
+    padding: 0.5rem;
+    text-align: center;
+    vertical-align: top;
+    min-width: 180px;
+    max-width: 200px;
+}
+
+/* Subjects in the table */
+.subject {
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin: 0.25rem 0;
+    min-height: 50px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.2s ease;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: 2px solid;
 }
 
-.subject-item:hover {
-    background-color: #f8f9fa;
-}
-
-.subject-item:last-child {
-    border-bottom: none;
-}
-
-.subject-item strong {
-    font-size: 1.1rem;
-    color: #2c3e50;
-    flex: 1;
-}
-
-.time {
-    background-color: #17a2b8;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
+.subject strong {
+    display: block;
+    margin-bottom: 0.25rem;
     font-size: 0.85rem;
-    margin: 0 0.5rem;
-    font-weight: 500;
+    line-height: 1.2;
+    font-weight: 600;
 }
 
-.modality {
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: 500;
+.subject small {
+    font-size: 0.75rem;
+    opacity: 0.9;
     text-transform: capitalize;
+    font-weight: 500;
+}
+
+.subject small i {
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 /* Modality colors */
-.modality.virtual {
-    background-color: #28a745;
+.subject.virtual {
+    background-color: #21D357;
+    border-color: #1D2F6F;
+    color: #1D2F6F;
+}
+
+.subject.presencial {
+    background-color: #E54F6D;
+    border-color: #1D2F6F;
     color: white;
 }
 
-.modality.presencial {
-    background-color: #dc3545;
-    color: white;
-}
-
-.modality.mixta {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-/* No classes */
-.no-classes {
-    padding: 2rem;
-    text-align: center;
-    color: #6c757d;
-    font-style: italic;
-    background-color: #f8f9fa;
+.subject.mixta {
+    background-color: #F8C630;
+    border-color: #1D2F6F;
+    color: #1D2F6F;
 }
 
 /* Summary section */
 .summary {
-    background-color: #e9ecef;
+    background-color: rgba(235, 242, 250, 0.8);
     padding: 1.5rem;
     border-radius: 6px;
     margin-top: 2rem;
+    border: 1px solid #1D2F6F;
 }
 
 .summary h2 {
-    color: #495057;
+    color: #1D2F6F;
     margin-bottom: 1rem;
     font-size: 1.75rem;
 }
 
-.summary ul {
-    list-style: none;
-    padding: 0;
+.summary p {
+    color: #1D2F6F;
+    font-weight: 500;
 }
 
-.summary li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #dee2e6;
-    font-size: 1.1rem;
+.modality-summary {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-.summary li:last-child {
-    border-bottom: none;
+.modality-count {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 2px solid;
+}
+
+.modality-count i {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.modality-count.virtual {
+    background-color: rgba(94, 252, 141, 0.3);
+    border-color: #21D357;
+    color: #1D2F6F;
+}
+
+.modality-count.presencial {
+    background-color: rgba(229, 79, 109, 0.3);
+    border-color: #E54F6D;
+    color: #1D2F6F;
+}
+
+.modality-count.mixta {
+    background-color: rgba(248, 198, 48, 0.3);
+    border-color: #F8C630;
+    color: #1D2F6F;
 }
 
 /* Footer */
 footer {
-    background-color: #495057;
+    background-color: #1D2F6F;
     color: white;
+    text-align: center;
     padding: 1rem;
     font-size: 0.9rem;
 }
@@ -184,13 +233,110 @@ footer {
         font-size: 2rem;
     }
 
-    .subject-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    .schedule-table {
+        font-size: 0.8rem;
     }
 
-    .subject-item strong {
-        margin-bottom: 0.5rem;
+    .time-slot {
+        min-width: 100px;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .day-cell {
+        min-width: 140px;
+        padding: 0.25rem;
+    }
+    
+    .subject {
+        min-height: 50px;
+        padding: 0.5rem;
+    }
+    
+    .modality-summary {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background-color: white !important;
+        padding: 10px;
+        font-size: 12pt;
+        color: #1D2F6F !important;
+    }
+    
+    .container {
+        box-shadow: none;
+        border-radius: 0;
+        max-width: 100%;
+    }
+    
+    header {
+        background: #1D2F6F !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 1rem !important;
+    }
+    
+    header h1 {
+        font-size: 18pt !important;
+        color: white !important;
+    }
+    
+    .schedule-table {
+        font-size: 10pt;
+        page-break-inside: avoid;
+    }
+    
+    .schedule-table thead th {
+        background: #1D2F6F !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .subject {
+        min-height: 40px !important;
+        padding: 0.3rem !important;
+    }
+    
+    .subject strong {
+        font-size: 9pt !important;
+    }
+    
+    .subject small {
+        font-size: 8pt !important;
+    }
+    
+    /* Optimized colors for PDF */
+    .subject.virtual {
+        background-color: #21D357 !important;
+        border: 2px solid #1D2F6F !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .subject.presencial {
+        background-color: #E54F6D !important;
+        border: 2px solid #1D2F6F !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .subject.mixta {
+        background-color: #F8C630 !important;
+        border: 2px solid #1D2F6F !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    footer {
+        background: #1D2F6F !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 }

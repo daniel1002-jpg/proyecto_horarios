@@ -232,7 +232,7 @@ class TestGenerateHTML(unittest.TestCase):
         # Clean up
         os.remove(output_path)
 
-    def test_generate_html_contains_summary_stadistics(self):
+    def test_generate_html_contains_summary_statistics(self):
         # Arrange
         output_path = "output/test_horario.html"
 
@@ -242,13 +242,52 @@ class TestGenerateHTML(unittest.TestCase):
         # Assert
         with open(output_path, 'r') as file:
             content = file.read()
-            self.assertIn("Total de materias: 1", content)
+            self.assertIn("<strong>Total de materias:</strong> 1", content)
             self.assertIn("Presencial: 0", content)
             self.assertIn("Virtual: 0", content)
             self.assertIn("Mixta: 1", content)
 
         # Clean up
         os.remove(output_path)
+
+class TestGenerateTableData(unittest.TestCase):
+    
+    def setUp(self):
+        self.sample_data = [
+            {"nombre": "Teoría de Algoritmos", "horario": {"inicio": "19:00", "fin": "22:00"}, "dias": ["Lunes", "Jueves"], "modalidad": "mixta"},
+            {"nombre": "Matemáticas Discretas", "horario": {"inicio": "18:00", "fin": "21:00"}, "dias": ["Martes", "Viernes"], "modalidad": "presencial"}
+        ]
+        self.organized_data = horarios.organize_horarios(self.sample_data)
+
+    def test_generate_table_data_creates_time_slots(self):
+        # Act
+        table_data = horarios.generate_table_data(self.organized_data)
+
+        # Assert
+        self.assertEqual(len(table_data), 2)
+        self.assertIn("time_range", table_data[0])
+
+    def test_generate_table_data_sorts_time_ranges(self):
+        # Act
+        table_data = horarios.generate_table_data(self.organized_data)
+
+        # Assert
+        self.assertEqual(table_data[0]["time_range"], "18:00 - 21:00")
+        self.assertEqual(table_data[1]["time_range"], "19:00 - 22:00")
+
+    def test_generate_table_data_assigns_subjects_to_names(self):
+        # Act
+        table_data = horarios.generate_table_data(self.organized_data)
+
+        # Assert
+        first_row = table_data[0]
+        self.assertEqual(first_row["Martes"]["nombre"], "Matemáticas Discretas")
+        self.assertEqual(first_row["Viernes"]["nombre"], "Matemáticas Discretas")
+        self.assertIsNone(first_row["Miércoles"])
+
+        second_row = table_data[1]
+        self.assertEqual(second_row["Lunes"]["nombre"], "Teoría de Algoritmos")
+        self.assertEqual(second_row["Jueves"]["nombre"], "Teoría de Algoritmos")
 
 class TestIntegration(unittest.TestCase):
 

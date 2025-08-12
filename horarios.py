@@ -46,27 +46,55 @@ def generate_html(data, path_file):
     env = Environment(loader=FileSystemLoader('output'))
     template = env.get_template('template.html')
 
-    total_subjects = sum(len(subjects) for subjects in data.values())
-    modalitys = {"virtual": 0, "presencial": 0, "mixta": 0}
-    unic_subjects = set()
+    modalities = {"virtual": 0, "presencial": 0, "mixta": 0}
+    unique_subjects = set()
 
     for subjects in data.values():
         for subject in subjects:
-            if subject["nombre"] not in unic_subjects:
-                unic_subjects.add(subject["nombre"])
+            if subject["nombre"] not in unique_subjects:
+                unique_subjects.add(subject["nombre"])
                 modality = subject["modalidad"]
-                if modality in modalitys:
-                    modalitys[modality] += 1
+                if modality in modalities:
+                    modalities[modality] += 1
+
+    table_data = generate_table_data(data)
 
     template_data = {
         "cuatrimestre": "2° 2024",
         "horarios_por_dia": data,
+        "horarios_tabla": table_data,
         "fecha_generacion": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "total_materias": len(unic_subjects),
-        "modalidades": modalitys
+        "total_materias": len(unique_subjects),
+        "modalidades": modalities
     }
 
     content = template.render(template_data)
 
     with open(path_file, 'w', encoding='utf-8') as file:
         file.write(content)
+
+def generate_table_data(organized_data):
+    times = set()
+
+    for day_subjects in organized_data.values():
+        for subject in day_subjects:
+            time_range = f"{subject['horario']['inicio']} - {subject['horario']['fin']}"
+            times.add(time_range)
+
+    sorted_times = sorted(list(times))
+
+    table_rows = []
+    for time_range in sorted_times:
+        row = {"time_range": time_range}
+        for day in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]:
+            day_subject = None
+            if day in organized_data:
+                for subject in organized_data[day]:
+                    subject_time = f"{subject['horario']['inicio']} - {subject['horario']['fin']}"
+                    if subject_time == time_range:
+                        day_subject = subject
+                        break
+            row[day] = day_subject
+        table_rows.append(row)
+
+    return table_rows
