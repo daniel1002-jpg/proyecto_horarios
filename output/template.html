@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,23 +8,24 @@
         <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     </head>
+
     <body>
         <!-- Macro para generar ícono según modalidad -->
         {% macro modality_icon(modalidad) -%}
-            {% if modalidad == 'virtual' %}
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-            {% elif modalidad == 'presencial' %}
-                <i class="fa-solid fa-building"></i>
-            {% elif modalidad == 'mixta' %}
-                <i class="fa-solid fa-house-user"></i>
-            {% endif %}
+        {% if modalidad == 'virtual' %}
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        {% elif modalidad == 'presencial' %}
+        <i class="fa-solid fa-building"></i>
+        {% elif modalidad == 'mixta' %}
+        <i class="fa-solid fa-house-user"></i>
+        {% endif %}
         {%- endmacro %}
         <div class="container">
-            <header>
-                <h1>Horario {{ cuatrimestre }}</h1>
-            </header>
+            <div id="schedule-only">
+                <header>
+                    <h1>Horario {{ cuatrimestre }}</h1>
+                </header>
 
-            <main>
                 <section class="schedule-table-container">
                     <table class="schedule-table">
                         <thead>
@@ -44,7 +46,8 @@
                                     {% if horario.Lunes %}
                                     <div class="subject {{ horario.Lunes.modalidad }}">
                                         <strong>{{ horario.Lunes.nombre }}</strong>
-                                        <small>{{ modality_icon(horario.Lunes.modalidad) }} ({{ horario.Lunes.modalidad }})</small>
+                                        <small>{{ modality_icon(horario.Lunes.modalidad) }} ({{ horario.Lunes.modalidad
+                                            }})</small>
                                     </div>
                                     {% endif %}
                                 </td>
@@ -52,7 +55,8 @@
                                     {% if horario.Martes %}
                                     <div class="subject {{ horario.Martes.modalidad }}">
                                         <strong>{{ horario.Martes.nombre }}</strong>
-                                        <small>{{ modality_icon(horario.Martes.modalidad) }} ({{ horario.Martes.modalidad }})</small>
+                                        <small>{{ modality_icon(horario.Martes.modalidad) }} ({{
+                                            horario.Martes.modalidad }})</small>
                                     </div>
                                     {% endif %}
                                 </td>
@@ -60,7 +64,8 @@
                                     {% if horario.Miércoles %}
                                     <div class="subject {{ horario.Miércoles.modalidad }}">
                                         <strong>{{ horario.Miércoles.nombre }}</strong>
-                                        <small>{{ modality_icon(horario.Miércoles.modalidad) }} ({{ horario.Miércoles.modalidad }})</small>
+                                        <small>{{ modality_icon(horario.Miércoles.modalidad) }} ({{
+                                            horario.Miércoles.modalidad }})</small>
                                     </div>
                                     {% endif %}
                                 </td>
@@ -68,7 +73,8 @@
                                     {% if horario.Jueves %}
                                     <div class="subject {{ horario.Jueves.modalidad }}">
                                         <strong>{{ horario.Jueves.nombre }}</strong>
-                                        <small>{{ modality_icon(horario.Jueves.modalidad) }} ({{ horario.Jueves.modalidad }})</small>
+                                        <small>{{ modality_icon(horario.Jueves.modalidad) }} ({{
+                                            horario.Jueves.modalidad }})</small>
                                     </div>
                                     {% endif %}
                                 </td>
@@ -76,7 +82,8 @@
                                     {% if horario.Viernes %}
                                     <div class="subject {{ horario.Viernes.modalidad }}">
                                         <strong>{{ horario.Viernes.nombre }}</strong>
-                                        <small>{{ modality_icon(horario.Viernes.modalidad) }} ({{ horario.Viernes.modalidad }})</small>
+                                        <small>{{ modality_icon(horario.Viernes.modalidad) }} ({{
+                                            horario.Viernes.modalidad }})</small>
                                     </div>
                                     {% endif %}
                                 </td>
@@ -85,14 +92,30 @@
                         </tbody>
                     </table>
                 </section>
-                
+            </div>
+
+            <main>
                 <section class="summary">
                     <h2>Resumen</h2>
                     <p><strong>Total de materias:</strong> {{ total_materias }}</p>
                     <div class="modality-summary">
-                        <span class="modality-count virtual">{{ modality_icon('virtual') }} Virtual: {{ modalidades.virtual }}</span>
-                        <span class="modality-count presencial">{{ modality_icon('presencial') }} Presencial: {{ modalidades.presencial }}</span>
-                        <span class="modality-count mixta">{{ modality_icon('mixta') }} Mixta: {{ modalidades.mixta }}</span>
+                        <span class="modality-count virtual">{{ modality_icon('virtual') }} Virtual: {{
+                            modalidades.virtual }}</span>
+                        <span class="modality-count presencial">{{ modality_icon('presencial') }} Presencial: {{
+                            modalidades.presencial }}</span>
+                        <span class="modality-count mixta">{{ modality_icon('mixta') }} Mixta: {{ modalidades.mixta
+                            }}</span>
+                    </div>
+                </section>
+
+                <section class="export-section">
+                    <button id="export-btn" class="export-button">
+                        <i class="fa-solid fa-download"></i>
+                        Exportar como imagen
+                    </button>
+                    <div id="loading" class="loading-message" style="display: none">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        Generando imagen...
                     </div>
                 </section>
             </main>
@@ -101,5 +124,9 @@
                 <p>Generado automáticamente el {{ fecha_generacion }}</p>
             </footer>
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script type="text/javascript" src="export.js"></script>
     </body>
+
 </html>

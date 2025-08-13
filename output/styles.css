@@ -214,6 +214,107 @@ main {
     color: #1D2F6F;
 }
 
+/* Export section */
+.export-section {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-top: 2px solid #EBF2FA;
+}
+
+.export-button {
+    background: linear-gradient(135deg, #1D2F6F, #3498db);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(29, 47, 111, 0.3);
+}
+
+.export-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(29, 47, 111, 0.4);
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+}
+
+.export-button:active {
+    transform: translateY(0);
+}
+
+.loading-message {
+    color: #1D2F6F;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Success and error messages */
+.success-message,
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideIn 0.3s ease;
+}
+
+.success-message {
+    background-color: #28a745;
+    border: 1px solid #1e7e34;
+}
+
+.error-message {
+    background-color: #dc3545;
+    border: 1px solid #c82333;
+}
+
+/* schedule-only container for export */
+#schedule-only {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+#schedule-only header {
+    background: #1D2F6F;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    margin: 0;
+}
+
+#schedule-only .schedule-table-container {
+    padding: 2rem;
+    margin: 0;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
 /* Footer */
 footer {
     background-color: #1D2F6F;
@@ -338,5 +439,10 @@ footer {
         color: white !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+    }
+
+    /* Optimized for image export */
+    .export-section {
+        display: none !important;
     }
 }
