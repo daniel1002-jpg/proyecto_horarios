@@ -1,21 +1,40 @@
 [
 	{
-		"nombre": "Taller de programación 1",
+		"nombre": "Empresas de Base Tecnológica 1",
 		"horario": 
 			{
 				"inicio": "18:00",
-				"fin": "22:00"
+				"fin": "21:00"
 			},
-		"dias": ["Lunes", "Jueves"],
+		"dias": ["Lunes"],
 		"modalidad": "virtual"
+	},
+	{
+		"nombre": "Empresas de Base Tecnológica 1",
+		"horario": 
+			{
+				"inicio": "18:00",
+				"fin": "21:00"
+			},
+		"dias": ["Miércoles"],
+		"modalidad": "presencial"
 	},
 	{
 		"nombre": "Probabilidad y Estadística",
 		"horario": {
-			"inicio": "18:00",
+			"inicio": "17:00",
+			"fin": "19:00"
+		},
+		"dias": ["Miércoles"],
+		"modalidad": "presencial"
+	},
+	{
+		"nombre": "Probabilidad y Estadística",
+		"horario": {
+			"inicio": "17:00",
 			"fin": "21:00"
 		},
-		"dias": ["Martes", "Miércoles"],
+		"dias": ["Viernes"],
 		"modalidad": "presencial"
 	},
 	{
@@ -24,7 +43,16 @@
 			"inicio": "19:00",
 			"fin": "22:00"
 		},
-		"dias": ["Lunes", "Jueves"],
-		"modalidad": "mixta"
+		"dias": ["Martes"],
+		"modalidad": "presencial"
+	},
+	{
+		"nombre": "Teoría de Algoritmos",
+		"horario": {
+			"inicio": "19:00",
+			"fin": "22:00"
+		},
+		"dias": ["Jueves"],
+		"modalidad": "virtual"
 	}
 ]

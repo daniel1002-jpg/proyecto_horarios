@@ -60,7 +60,7 @@ def generate_html(data, path_file):
     table_data = generate_table_data(data)
 
     template_data = {
-        "cuatrimestre": "2° 2024",
+        "cuatrimestre": "2° 2025",
         "horarios_por_dia": data,
         "horarios_tabla": table_data,
         "fecha_generacion": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -81,7 +81,7 @@ def generate_table_data(organized_data):
             time_range = f"{subject['horario']['inicio']} - {subject['horario']['fin']}"
             times.add(time_range)
 
-    sorted_times = sorted(list(times))
+    sorted_times = sorted(list(times), key=lambda x: x.split(" - ")[0])
 
     table_rows = []
     for time_range in sorted_times:
